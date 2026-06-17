@@ -310,3 +310,4 @@ init();
 //         promoCard.style.border = "1px solid var(--accent-green)";
 //     }
 // }
+// Chart initialize karne ka function
