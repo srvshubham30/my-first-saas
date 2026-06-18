@@ -616,3 +616,24 @@ Premium Promo Card Container Layout
     background: #2563eb;
     transform: scale(1.05);
 }
+
+
+/* Mobile screen ke liye navigation fix */
+@media (max-width: 600px) {
+    .navbar .nav-container {
+        flex-direction: column; /* Items ko ek ke niche ek stack karo */
+        gap: 10px;
+        text-align: center;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        font-size: 0.9rem;
+    }
+
+    .logo {
+        margin-bottom: 5px;
+    }
+}
