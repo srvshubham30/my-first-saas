@@ -38,12 +38,19 @@
             <a href="#" class="logo">Grind90</a>
             <nav class="nav-links">
                 <a href="#">Dashboard</a>
-                <a href="#">Leaderboard</a>
-                <a href="#">Support</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a href="contacts.html">Support</a>
             </nav>
-            <button class="nav-btn">Get Started</button>
+            <button class="nav-btn" onclick="document.querySelector('.create-form').scrollIntoView({behavior: 'smooth'})">
+    Get Started
+</button>
         </div>
     </header>
+
+    <div class="quote-card" id="quote-box">
+    <p id="quote-text">"Loading your motivation..."</p>
+    <small id="quote-author">- Grind90</small>
+</div>
 
 
 

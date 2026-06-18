@@ -38,11 +38,11 @@ const daysSelect = document.getElementById('new-challenge-days');
 // ==========================================================================
 function init() {
     const keys = Object.keys(store.challenges);
-    
+
     if (!store.activeId || !store.challenges[store.activeId]) {
         store.activeId = keys.length > 0 ? keys[0] : null;
     }
-    
+
     refreshSelectorDropdown();
     challengeSelector.value = store.activeId || '';
     renderDashboard();
@@ -53,7 +53,7 @@ function init() {
 // ==========================================================================
 function renderDashboard() {
     const activeChallenge = store.challenges[store.activeId];
-    
+
     if (!activeChallenge) {
         activeChallengeTitle.innerText = "No active challenges. Create one above!";
         grid.innerHTML = '';
@@ -62,7 +62,7 @@ function renderDashboard() {
     }
 
     activeChallengeTitle.innerText = activeChallenge.name;
-    
+
     const start = new Date(activeChallenge.startDate);
     const today = new Date();
     const timeDiff = today - start;
@@ -74,7 +74,7 @@ function renderDashboard() {
     for (let i = 1; i <= totalDays; i++) {
         const card = document.createElement('div');
         card.classList.add('day-card');
-        
+
         const dayKey = `day_${i}`;
         const isCompleted = activeChallenge.days[dayKey]?.completed;
 
@@ -89,7 +89,7 @@ function renderDashboard() {
         card.addEventListener('click', () => openDayConfiguration(i));
         grid.appendChild(card);
     }
-    
+
     calculateAnalytics(activeChallenge, totalDays);
 }
 
@@ -103,20 +103,20 @@ function openDayConfiguration(dayNumber) {
     const prevDayKey = `day_${dayNumber - 1}`;
 
     modalTitle.innerText = `Update Progress: Day ${dayNumber}`;
-    
+
     const currentData = activeChallenge.days[dayKey] || {};
     const prevData = activeChallenge.days[prevDayKey] || {};
 
     noteInput.value = currentData.note || '';
-    
+
     // Core Auto-Fill Engine: Runs condition parameters
     if (currentData.metric !== undefined && currentData.metric !== "") {
         metricInput.value = currentData.metric;
-        autofillHint.style.display = 'none'; 
+        autofillHint.style.display = 'none';
     } else if (prevData.metric !== undefined && prevData.metric !== "") {
         // Smart pre-fill from yesterday
         metricInput.value = prevData.metric;
-        autofillHint.style.display = 'block'; 
+        autofillHint.style.display = 'block';
     } else {
         metricInput.value = '';
         autofillHint.style.display = 'none';
@@ -134,7 +134,7 @@ document.getElementById('save-day-btn').addEventListener('click', () => {
 
     const dayKey = `day_${currentEditingDay}`;
     if (!activeChallenge.days[dayKey]) activeChallenge.days[dayKey] = {};
-    
+
     activeChallenge.days[dayKey].completed = true;
     activeChallenge.days[dayKey].metric = metricInput.value !== "" ? Number(metricInput.value) : 0;
     activeChallenge.days[dayKey].note = noteInput.value.trim();
@@ -149,7 +149,7 @@ document.getElementById('clear-day-btn').addEventListener('click', () => {
 
     const dayKey = `day_${currentEditingDay}`;
     if (activeChallenge.days[dayKey]) delete activeChallenge.days[dayKey];
-    
+
     saveAndRefresh();
     modal.classList.remove('active');
 });
@@ -158,7 +158,7 @@ document.getElementById('clear-day-btn').addEventListener('click', () => {
 document.getElementById('create-btn').addEventListener('click', () => {
     const nameInput = document.getElementById('new-challenge-name');
     const title = nameInput.value.trim();
-    
+
     if (!title) {
         alert('Please enter a valid challenge name!');
         return;
@@ -170,12 +170,12 @@ document.getElementById('create-btn').addEventListener('click', () => {
 
     if (isOptionPremium && !userProfile.isPremium) {
         alert("❌ Premium Locked! Upgrade to unlock the multi-year journey.");
-        return; 
+        return;
     }
 
     const totalDays = parseInt(daysSelect.value, 10);
     const id = 'id_' + Date.now();
-    
+
     store.challenges[id] = {
         name: title,
         totalDays: totalDays,
@@ -185,7 +185,7 @@ document.getElementById('create-btn').addEventListener('click', () => {
 
     store.activeId = id;
     nameInput.value = '';
-    
+
     refreshSelectorDropdown();
     challengeSelector.value = id;
     saveAndRefresh();
@@ -195,10 +195,10 @@ document.getElementById('delete-challenge-btn').addEventListener('click', () => 
     if (!store.activeId) return;
     if (confirm('Are you sure you want to delete this challenge container?')) {
         delete store.challenges[store.activeId];
-        
+
         const keys = Object.keys(store.challenges);
         store.activeId = keys.length > 0 ? keys[0] : null;
-        
+
         refreshSelectorDropdown();
         challengeSelector.value = store.activeId || '';
         saveAndRefresh();
@@ -213,7 +213,7 @@ challengeSelector.addEventListener('change', (e) => {
 function refreshSelectorDropdown() {
     challengeSelector.innerHTML = '';
     const keys = Object.keys(store.challenges);
-    
+
     if (keys.length === 0) {
         const option = document.createElement('option');
         option.value = '';
@@ -237,7 +237,7 @@ function calculateAnalytics(challenge, totalDays) {
     let completedCount = 0;
     let currentStreak = 0;
     let maxStreak = 0;
-    let totalVolume = 0; 
+    let totalVolume = 0;
 
     for (let i = 1; i <= totalDays; i++) {
         const dayData = challenge.days[`day_${i}`];
@@ -245,7 +245,7 @@ function calculateAnalytics(challenge, totalDays) {
             completedCount++;
             currentStreak++;
             if (currentStreak > maxStreak) maxStreak = currentStreak;
-            
+
             if (dayData.metric) {
                 totalVolume += Number(dayData.metric);
             }
@@ -263,7 +263,7 @@ function updateAnalyticsVisibility(count, total, percent, streak = 0, totalVolum
     progressPercent.innerText = `${percent}%`;
     streakCount.innerText = streak;
     if (totalMetricCount) {
-        totalMetricCount.innerText = totalVolume; 
+        totalMetricCount.innerText = totalVolume;
     }
 }
 
@@ -314,3 +314,22 @@ init();
 
 
 
+const quotes = [
+    { text: "Consistency is what transforms average into excellence.", author: "Unknown" },
+    { text: "Don't stop when you're tired. Stop when you're done.", author: "David Goggins" },
+    { text: "Small daily improvements over time lead to stunning results.", author: "Robin Sharma" },
+    { text: "The grind doesn't stop. Neither should you.", author: "Grind90" },
+    { text: "Life isn’t about finding yourself.Life is about creating yourself.", author: "George Bernard Shaw" },
+    { text: "Nothing is impossible. The word itself says ‘I’m possible!'.", author: "Audrey Hepburn" }
+
+];
+
+function setRandomQuote() {
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    const quote = quotes[randomIndex];
+    document.getElementById("quote-text").innerText = `"${quote.text}"`;
+    document.getElementById("quote-author").innerText = `- ${quote.author}`;
+}
+
+// Page load hote hi quote set karo
+window.addEventListener('DOMContentLoaded', setRandomQuote);
